@@ -26,16 +26,17 @@ class EventsFragment : Fragment(), ItemSelected<Events> {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.main_fragment, container, false)
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         eventsAdapter = EventsAdapter(events, this)
         events_recycler_view.layoutManager = LinearLayoutManager(context)
         events_recycler_view.adapter = eventsAdapter
-        viewModel.loadEventsData().observe(this, Observer { viewData ->
+        viewModel.loadEventsData().observe(viewLifecycleOwner, Observer { viewData ->
             when (viewData.state) {
                 ViewState.SUCCESS -> {
                     events_progress.visibility = View.GONE
                     viewData.data?.let {
+                        if(events.size > 0) events.removeAll(events)
                         events.addAll(it)
                         eventsAdapter.notifyDataSetChanged()
                     }
