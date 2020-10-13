@@ -36,7 +36,7 @@ class EventsFragment : Fragment(), ItemSelected<Events> {
                 ViewState.SUCCESS -> {
                     events_progress.visibility = View.GONE
                     viewData.data?.let {
-                        if(events.size > 0) events.removeAll(events)
+                        if (events.size > 0) events.removeAll(events)
                         events.addAll(it)
                         eventsAdapter.notifyDataSetChanged()
                     }
